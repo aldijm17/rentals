@@ -6,9 +6,9 @@ use App\Http\Controllers\BicycleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\RentalsController;
-Route::get('/', function () {
-    return view('guest');
-}) ->name('dashboard.guest');
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GuestController;
+Route::get('/', [GuestController::class, 'index'])->name('home.guest');
 
  Route::middleware('guest')->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -18,9 +18,7 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/customers', [CustomersController::class, 'index'])->name('customers.index');
     Route::post('/customers/store', [CustomersController::class, 'store'])->name('customers.store');

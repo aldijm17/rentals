@@ -4,24 +4,27 @@
 <div class="container">
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('bicycles.store') }}" method="POST">
+        <form action="{{ route('bicycles.store') }}" method="POST" enctype="multipart/form-data">
             @csrf 
             @method('POST')
             <input type="text" name="merk" class="form-control mb-3" placeholder="Merk">
             <input type="text" name="tipe" class="form-control mb-3" placeholder="Tipe">
+            <!-- <input type="text" name="foto" class="form-control mb-3" placeholder="Tambahkan Foto"> -->
+            <input type="file" name="foto" class="form-control mb-3" placeholder="Tambahkan Foto">
             <input type="text" name="warna" class="form-control mb-3" placeholder="Warna">
             <input type="text" name="harga_sewa" class="form-control mb-3" placeholder="Harga Sewa (Hanya Angka)">
             <select name="status" id="" class="form-control mb-3">
-                <option value="tersedia">Tersedia</option>
-                <option value="disewa">Disewa</option>
+                <option value="Tersedia">Tersedia</option>
+                <option value="Disewa">Disewa</option>
             </select>
-            <button class="btn btn-primary mb-4">Simpan Data</button>
+            <button class="btn btn-primary mb-4" onclick="showAlert()">Simpan Data</button>
         </form>
-       <table class="table table-bodered">
+       <table class="table table-bordered">
         <thead class="text-center">
             <tr>
                 <th>No</th>
                 <th>Merk</th>
+                <th>Foto</th>
                 <th>Tipe</th>
                 <th>Warna</th>
                 <th>Harga Sewa</th>
@@ -34,6 +37,7 @@
             <tr>
                 <td>{{ $index + 1}}</td>
                 <td>{{ $b->merk}}</td>
+                <td class="text-center"><img src="{{ asset($b->foto)}}" alt="" height="100px" widht="100px"></td>
                 <td>{{ $b->tipe}}</td>
                 <td>{{ $b->warna}}</td>
                 <td>{{ $b->harga_sewa}}</td>
@@ -50,7 +54,7 @@
 
             @empty
             <tr>
-                <td colspan= 6 class="text-center">Data Tidak Ditemukan</td>
+                <td colspan= 8 class="text-center">Data Tidak Ditemukan</td>
             </tr>
             @endforelse
         </tbody>
@@ -58,4 +62,14 @@
     </div>
 </div>
 </div>
+    <script>
+        function showAlert() {
+            Swal.fire({
+                title: "Berhasil!",
+                text: "Data telah disimpan.",
+                icon: "success",
+                confirmButtonText: "OK"
+            });
+        }
+    </script>
 @endsection

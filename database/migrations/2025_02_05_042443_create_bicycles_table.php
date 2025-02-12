@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('bicycles', function (Blueprint $table) {
             $table->id('id_bicycle');
             $table->string('merk', 50);
+            $table->string('foto');
             $table->string('tipe', 50);
             $table->string('warna', 30);
             $table->decimal('harga_sewa', 10,2);
@@ -21,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      */

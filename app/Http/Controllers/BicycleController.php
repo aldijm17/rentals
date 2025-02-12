@@ -28,18 +28,30 @@ class BicycleController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'merk' => 'required',
-            'tipe' => 'required',
-            'warna' => 'required',
-            'harga_sewa' => 'required',
-            'status' => 'required',
-        ]);
+{
+    $request->validate([
+        'merk' => 'required',
+        'foto' => 'required',
+        'tipe' => 'required',
+        'warna' => 'required',
+        'harga_sewa' => 'required',
+        'status' => 'required',
+    ]);
 
-        Bicycle::create($request->all());
-        return redirect()->route('bicycle.index');
-    }
+    $imageName = time().'.'.$request->foto->extension();
+    $request->foto->move(public_path('images'), $imageName);
+
+    Bicycle::create([
+        'merk' => $request->merk,
+        'foto' => 'images/'.$imageName,
+        'tipe' => $request->tipe,
+        'warna' => $request->warna,
+        'harga_sewa' => $request->harga_sewa,
+        'status' => $request->status,
+    ]);
+
+    return redirect()->route('bicycles.index');
+}
 
     /**
      * Display the specified resource.
@@ -72,7 +84,7 @@ class BicycleController extends Controller
         ]);
         $bicycle= Bicycle::findOrFail($id);
         $bicycle->update($request->all());
-        return redirect()->route('bicycle.index');
+        return redirect()->route('bicycles.index');
     }
 
     /**
@@ -82,6 +94,6 @@ class BicycleController extends Controller
     {
         $bicycle= Bicycle::findOrFail($id);
         $bicycle->delete();
-        return redirect()->route('bicycle.index');
+        return redirect()->route('bicycles.index');
     }
 }

@@ -13,6 +13,7 @@ class Bicycle extends Model
     protected $primaryKey = 'id_bicycle';
     protected $fillable = [
         'merk',
+        'foto',
         'tipe',
         'warna',
         'harga_sewa',

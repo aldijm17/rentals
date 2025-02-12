@@ -7,14 +7,13 @@
             <form action="{{ route('rentals.store')}}" method="POST">
                 @csrf 
                 @method('POST')
-                <select name="id_customer" id="" class="form-control mb-2 ">
+                <select name="id_customer" id="" class="form-control mb-2 " required>
                     <option value="">--Nama--</option>
                     @foreach($customers as $c)
                     <option value="{{$c->id_customer}}">{{$c->nama}}</option>
                     @endforeach
                 </select> 
-
-                <select name="id_bicycle" id="" class="form-control mb-2">
+                <select name="id_bicycle" id="" class="form-control mb-2" required>
                     <option value="">--Bicycle--</option>
                     @foreach($bicycles as $b)
                     <option value="{{$b->id_bicycle}}">{{$b->merk}} | {{$b->tipe}}</option>
@@ -23,15 +22,15 @@
                 <div class="row">
                 <div class="col-md-6">
                     <label for="">Tanggal Sewa : </label>
-                    <input type="date" name="tanggal_sewa" class = "form-control mb-2 mt-1">
+                    <input type="date" name="tanggal_sewa" class = "form-control mb-2 mt-1" required>
                 </div>
                 <div class="col-md-6">
                     <label for="">Tanggal Kembali : </label>
-                    <input type="date" name="tanggal_kembali" class="form-control mb-2 mt-1">
+                    <input type="date" name="tanggal_kembali" class="form-control mb-2 mt-1" required>
                 </div>
                 </div>
-                <input type="number" name="total_biaya" class="form-control mb-2" placeholder="Total Pembayaran">
-                <select name="status" id="" class="form-control">
+                <input type="number" name="total_biaya" class="form-control mb-2" placeholder="Total Pembayaran" required>
+                <select name="status" id="" class="form-control" required>
                     <option value="">--status--</option>
                     <option value="disewa">Disewa</option>
                     <option value="dikembalikan">DiKembalikan</option>
@@ -41,7 +40,7 @@
         </div>
     </div>
     <h2>Data Rental Pengguna</h2>
-    <div class="card">
+    <div class="card shadow-lg">
     <div class="card-body">
     <table class="table table-bordered">
         <thead class="text-center">
@@ -67,11 +66,11 @@
                 <td>{{$r->total_biaya}}</td>
                 <td>{{$r->status}}</td>
                 <td class="d-flex justify-content-center">
-                    <a href="{{ route('rentals.edit', $r->id_rental) }}" class="btn btn-warning me-3">Edit</a>
+                    <a href="{{ route('rentals.edit', $r->id_rental) }}" class="btn btn-warning me-3 text-white"><i class="bi bi-pencil"></i></a>
                     <form action="{{ route('rentals.destroy',$r->id_rental) }}" method="POST">
                         @csrf 
                         @method('DELETE')
-                        <button class="btn btn-danger">Hapus</button>
+                        <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
                     </form>
                 </td>
             </tr>
