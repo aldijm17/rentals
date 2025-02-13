@@ -6,7 +6,7 @@
         <a href="#content" class="btn btn-primary">Lihat Sepeda</a>
     </section>
     <section id="content" class="container mt-5">
-        <h3 class="text-center">Sepeda Terbaik Kami</h3>
+        <h3 class="text-center"><b>Sepeda Terbaik Kami</b></h3>
         <div class="card-list">
             <div class="row d-flex justify-content-center">
                 @foreach($bicycle as $b)
