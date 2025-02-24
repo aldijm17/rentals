@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/Auth/LoginController.php
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -16,7 +15,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'login' => ['required', 'string'], // This will accept either name or email
+            'login' => ['required', 'string'],
             'password' => ['required'],
         ]);
 

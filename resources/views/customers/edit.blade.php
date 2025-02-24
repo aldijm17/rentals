@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('layout.dashboard')
 @section('main-content')
         <div class="card">
             <div class="card-body">

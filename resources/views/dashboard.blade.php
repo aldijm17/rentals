@@ -1,38 +1,57 @@
-@extends('layout.layout')
+@extends('layout.dashboard')
 @section('main-content')
-    <section id="hero" class="text-dark d-flex flex-column justify-content-center align-items-center min-vh-100">
-        <p style="font-size:8rem;" class="text-primary text-center mb-3"><b>Bicycle <span class="text-warning">Rent</span></b></p>
-        <p class="text-center mb-4 fs-4"><b>Halo, Siap Untuk Sehat? Ayo Segera Rental Sepeda Favoritmu</b></p>
-        <a href="#content" class="btn btn-primary ">Lihat Sepeda</a>
-    </section>
-    <section id="content" class="container mt-5">
-        <h3 class="text-center mb-4"><b>Sepeda <span class="text-primary">Terbaik</span> <span class="text-warning">Kami</span></b></h3>
-        <div class="card-list">
-            <div class="row d-flex justify-content-center">
-                @foreach($bicycle as $b)
-                <div class="col-md-4">
-                    <article class="card maincard m-2">
-                        <figure class="card-image">
-                            <img src="{{ asset($b->foto) }}" alt="An orange painted blue, cut in half laying on a blue background" />
-                        </figure>
-                        <div class="card-header">
-                            <h4><b>{{ $b->merk}}</b></h4>
-                            <br>
-                            <p>{{$b->status}}</p>
-                        </div>
-                        <p class="ms-3">{{$b->tipe}} <br> {{$b->warna}}</p>
-                        <p class="ms-3"></p>
-                        <div class="card-footer">
-                            <div class="card-meta card-meta--views">
-                                Rp {{$b->harga_sewa}}
-                            </div>
-                            <div class="card-meta card-meta--date">
-                            </div>
-                        </div>
-                    </article>
+<style>
+  
+    .card{
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .card:hover{
+        transform: translateY(-10px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    }
+    .running-text {
+    white-space: nowrap; /* Agar teks tidak turun ke bawah */
+    overflow: hidden;
+    display: inline-block;
+    position: relative;
+    animation: runText 10s linear infinite;
+    }
+
+/* Animasi teks berjalan */
+    @keyframes runText {
+        from { transform: translateX(100%); }
+        to { transform: translateX(-100%); }
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h3>Pelanggan Hari Ini</h3>
+            <div class="card">
+                <div class="card-body">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius, quae nulla dicta nobis et molestiae ut, distinctio architecto dolorem sunt consectetur voluptas fugiat nam voluptatibus consequuntur non odio. Facilis, voluptatum!
                 </div>
-                @endforeach
             </div>
         </div>
-    </section>
+        <div class="col-md-4">
+            <h3>Transaksi hari ini</h3>
+            <div class="card">
+                <div class="card-body">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit debitis facere non voluptatem saepe doloribus consequatur fuga possimus quasi unde! Enim cumque aut nostrum dolor architecto sunt laudantium repudiandae ex?
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>Pendapatan</h3>
+            <div class="card">
+                <div class="card-body">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo assumenda id quam ex animi quia totam! Amet doloremque facere, nihil libero facilis architecto hic dolore eum est itaque ratione reiciendis!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="running-text container-fluid mt-2 text-center">
+    <img src="{{ asset('image/runningimage2.png') }}" alt="" width="250px"><h1> Awas Si Imut Lewat!!</h1>
+</div>
 @endsection

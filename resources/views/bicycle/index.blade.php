@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('layout.dashboard')
 @section('main-content')
 <h2 class="text-center m-5">Data Sepeda</h2>
 <div class="container">

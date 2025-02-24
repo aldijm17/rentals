@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('layout.dashboard')
 @section('main-content')
 <div class="container">
     <h1 class="mt-5 mb-4"><b>Form Rental</b></h1>

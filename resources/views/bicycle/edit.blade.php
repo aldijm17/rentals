@@ -1,4 +1,5 @@
-@extends('layout.layout')
+@extends('layout.dashboard')
+
 @section('main-content')
 <h2 class="text-center m-5">Edit Data <span class="text-primary">{{$bicycle->tipe}}</span></h2>
 <div class="card">
