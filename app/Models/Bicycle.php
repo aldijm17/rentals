@@ -17,6 +17,7 @@ class Bicycle extends Model
         'tipe',
         'warna',
         'harga_sewa',
+        'deskripsi',
         'status',
     ];
     public function rentals(){

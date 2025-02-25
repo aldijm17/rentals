@@ -2,28 +2,44 @@
 @section('main-content')
 <h2 class="text-center m-5">Data Sepeda</h2>
 <div class="container">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                <form action="{{ route('bicycles.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf 
+                    @method('POST')
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" name="merk" class="form-control mb-3" placeholder="Merk">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="tipe" class="form-control mb-3" placeholder="Tipe">
+                        </div>
+                    </div>
+                    <textarea name="deskripsi" id="" class = "form-control mb-3" placeholder="Masukkan Deskripsi"></textarea>
+                    <input type="file" name="foto" class="form-control mb-3" placeholder="Tambahkan Foto">
+                    <input type="text" name="warna" class="form-control mb-3" placeholder="Warna">
+                    <input type="text" name="harga_sewa" class="form-control mb-3" placeholder="Harga Sewa (Hanya Angka)">
+                    <select name="status" id="" class="form-control mb-3">
+                        <option value="Tersedia">Tersedia</option>
+                        <option value="Disewa">Disewa</option>
+                    </select>
+                    <button class="btn btn-primary mb-4" onclick="showAlert()">Simpan Data</button>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('bicycles.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf 
-            @method('POST')
-            <input type="text" name="merk" class="form-control mb-3" placeholder="Merk">
-            <input type="text" name="tipe" class="form-control mb-3" placeholder="Tipe">
-            <!-- <input type="text" name="foto" class="form-control mb-3" placeholder="Tambahkan Foto"> -->
-            <input type="file" name="foto" class="form-control mb-3" placeholder="Tambahkan Foto">
-            <input type="text" name="warna" class="form-control mb-3" placeholder="Warna">
-            <input type="text" name="harga_sewa" class="form-control mb-3" placeholder="Harga Sewa (Hanya Angka)">
-            <select name="status" id="" class="form-control mb-3">
-                <option value="Tersedia">Tersedia</option>
-                <option value="Disewa">Disewa</option>
-            </select>
-            <button class="btn btn-primary mb-4" onclick="showAlert()">Simpan Data</button>
-        </form>
-       <table class="table table-bordered">
+       <table class="table table-bordered table-responsive">
         <thead class="text-center">
             <tr>
                 <th>No</th>
                 <th>Merk</th>
+                <th>Deskripsi</th>
                 <th>Foto</th>
                 <th>Tipe</th>
                 <th>Warna</th>
@@ -37,6 +53,7 @@
             <tr>
                 <td>{{ $index + 1}}</td>
                 <td>{{ $b->merk}}</td>
+                <td>{{ $b->deskripsi}}</td>
                 <td class="text-center"><img src="{{ asset($b->foto)}}" alt="" height="100px" widht="100px"></td>
                 <td>{{ $b->tipe}}</td>
                 <td>{{ $b->warna}}</td>

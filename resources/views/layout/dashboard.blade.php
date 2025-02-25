@@ -168,9 +168,9 @@
                 <button id="sidebarToggle" class="btn btn-light border me-2">
                     <i class="bi bi-list"></i>
                 </button>
-                <a class="navbar-brand text-primary" href="#">
+                <a class="navbar-brand" href="#">
                     <i class="bi bi-building"></i>
-                    Dashboard
+                    <b>Admin</b>
                 </a>
                 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -195,7 +195,9 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                 <i class="bi bi-person-circle text-success"></i>
-                                <span class="ms-1">Admin</span>
+                                <span class="ms-1">@if(Auth::check())
+                                    {{ Auth::user()->name }}
+                                    @endif</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Profile</a></li>

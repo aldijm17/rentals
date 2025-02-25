@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('tipe', 50);
             $table->string('warna', 30);
             $table->decimal('harga_sewa', 10,2);
+            $table->string('deskripsi',300);
             $table->string('status',30);
             $table->timestamps();
         });

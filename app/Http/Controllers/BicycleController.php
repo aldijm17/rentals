@@ -35,6 +35,7 @@ class BicycleController extends Controller
         'tipe' => 'required',
         'warna' => 'required',
         'harga_sewa' => 'required',
+        'deskripsi' => 'required',
         'status' => 'required',
     ]);
 
@@ -47,6 +48,7 @@ class BicycleController extends Controller
         'tipe' => $request->tipe,
         'warna' => $request->warna,
         'harga_sewa' => $request->harga_sewa,
+        'deskripsi' => $request->deskripsi,
         'status' => $request->status,
     ]);
 
@@ -80,6 +82,7 @@ class BicycleController extends Controller
             'tipe' => 'required',
             'warna' => 'required',
             'harga_sewa' => 'required',
+            'deskripsi' => 'required',
             'status' => 'required',
         ]);
         $bicycle= Bicycle::findOrFail($id);

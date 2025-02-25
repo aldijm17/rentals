@@ -131,43 +131,21 @@
     <section id="bikes" class="py-5 bg-primary-custom">
         <div class="container">
             <h2 class="text-center text-white mb-5">Sepeda Kami</h2>
-            <div class="row g-4">
+            <div class="row g-4 d-flex justify-content-center">
                 <!-- Bike Card 1 -->
+                 @foreach ($bicycle as $b)
                 <div class="col-md-6 col-lg-4">
                     <div class="card bike-card h-100">
-                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Mountain Bike">
+                        <img src="{{ asset($b->foto) }}" class="card-img-top" alt="Mountain Bike">
                         <div class="card-body">
-                            <h5 class="card-title">Sepeda Gunung</h5>
+                            <h5 class="card-title">{{$b->merk}}</h5>
                             <p class="card-text">Cocok untuk medan off-road dan petualangan.</p>
-                            <p class="text-primary fw-bold">Rp 100.000/hari</p>
+                            <p class="text-primary fw-bold">Rp {{$b->harga_sewa}}/hari</p>
                             <a href="#" class="btn btn-warning">Sewa Sekarang</a>
                         </div>
                     </div>
                 </div>
-                <!-- Bike Card 2 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card bike-card h-100">
-                        <img src="/api/placeholder/400/300" class="card-img-top" alt="City Bike">
-                        <div class="card-body">
-                            <h5 class="card-title">Sepeda Kota</h5>
-                            <p class="card-text">Ideal untuk perjalanan dalam kota.</p>
-                            <p class="text-primary fw-bold">Rp 80.000/hari</p>
-                            <a href="#" class="btn btn-warning">Sewa Sekarang</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Bike Card 3 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card bike-card h-100">
-                        <img src="/api/placeholder/400/300" class="card-img-top" alt="Folding Bike">
-                        <div class="card-body">
-                            <h5 class="card-title">Sepeda Lipat</h5>
-                            <p class="card-text">Praktis dan mudah dibawa kemana saja.</p>
-                            <p class="text-primary fw-bold">Rp 90.000/hari</p>
-                            <a href="#" class="btn btn-warning">Sewa Sekarang</a>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>

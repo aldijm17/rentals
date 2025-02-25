@@ -17,13 +17,17 @@
     animation: runText 10s linear infinite;
     }
 
-/* Animasi teks berjalan */
-    @keyframes runText {
+
+    /*@keyframes runText {
         from { transform: translateX(100%); }
         to { transform: translateX(-100%); }
-    }
+    }*/
 </style>
 <div class="container">
+    @if(Auth::check())
+    <p>Selamat datang, <b>{{ Auth::user()->name }}</b>!</p>
+    @endif
+
     <div class="row">
         <div class="col-md-4">
             <h3>Pelanggan Hari Ini</h3>
@@ -51,7 +55,7 @@
         </div>
     </div>
 </div>
-<div class="running-text container-fluid mt-2 text-center">
+<!-- <div class="running-text container-fluid mt-2 text-center">
     <img src="{{ asset('image/runningimage2.png') }}" alt="" width="250px"><h1> Awas Si Imut Lewat!!</h1>
-</div>
+</div> -->
 @endsection
