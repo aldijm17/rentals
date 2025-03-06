@@ -54,7 +54,7 @@
                 <td>{{ $index + 1}}</td>
                 <td>{{ $b->merk}}</td>
                 <td>{{ $b->deskripsi}}</td>
-                <td class="text-center"><img src="{{ asset($b->foto)}}" alt="" height="100px" widht="100px"></td>
+                <td class="text-center"><img src="{{ asset($b->foto)}}" alt="" height="100px" widht="100px  "></td>
                 <td>{{ $b->tipe}}</td>
                 <td>{{ $b->warna}}</td>
                 <td>{{ $b->harga_sewa}}</td>

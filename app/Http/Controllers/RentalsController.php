@@ -31,6 +31,32 @@ class RentalsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+     public function transaction(string $id){
+        $customers = Customers::All();
+        $bicycle = Bicycle::findOrFail($id);
+        return view('rentals.transaction', compact('bicycle', 'customers'));
+     }
+
+     public function progrestransaction(Request $request){
+        $request->validate([
+            'tanggal_sewa' => 'required',
+            'tanggal_kembali' => 'required',
+            'total_biaya' => 'required',
+        ]);
+    
+        $rentals = Rentals::create([
+            'id_bicycle' => $request->id_bicycle, // Correct syntax
+            'id_customer' => $request->id_customer, // Correct syntax
+            'tanggal_sewa' => $request->tanggal_sewa,
+            'tanggal_kembali' => $request->tanggal_kembali,
+            'total_biaya' => $request->total_biaya,
+            'status' => 'sewa',
+
+        ]);
+    
+        return redirect()->route('status-success');
+    }
     public function store(Request $request)
     {
         $request->validate([

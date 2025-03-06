@@ -3,63 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Document</title>
+    <title>BikeRent - Penyewaan Sepeda</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
-        ::-webkit-scrollbar {
-            width: 10px;
+        :root {
+            --primary-color:#0d6efd;
+            --secondary-color: #FFD700;
+            --light-color: #ffffff;
+            --dark-color:#000000;
         }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: blue;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: blue;
-        }
-        #hero {
-            /* background: url('{{asset('image/background.png') }}') no-repeat center center/cover; */
-            color: white;
-            text-align: center;
-            padding: 250px 20px;
 
+        .bg-primary-custom {
+            background-color: var(--primary-color);
         }
+
+        .bg-secondary-custom {
+            background-color: var(--secondary-color);
+        }
+
+        .hero {
+    min-height: 100vh;
+    background-image: url("{{ asset('image/2new.jpg') }}") center/cover no-repeat;
+    position: relative;
+}
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+
+        .bike-card {
+            transition: transform 0.3s ease;
+        }
+
+        .bike-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+        }
+
+        .navbar.scrolled {
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease-in-out;
+}
+
+.navbar-brand,
+.navbar-nav .nav-link {
+    color: #333 !important;
+}
+
+.navbar.scrolled .navbar-brand,
+.navbar.scrolled .nav-link {
+    color: #000 !important;
+}
+
+
     </style>
 </head>
 <body>
-<div class="header pt-2 pb-2 text-white bg-primary sticky-top">
-<h2 class="text-center mt-3"><b>Bicycle <span class="text-warning">Rent</span></b></h2>
-    <div class="NavWrap col-12 d-flex justify-content-center pb-3">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white col-11 rounded-pill shadow-lg mt-4">
-            <div class="container">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <img src="{{ asset('image/icon.png')}}" alt="" width="40px" height="40px">
-                    <div class="navbar-nav me-auto">
-                        <a class="nav-link ms-3" href="{{ route('dashboard')}}"><b>Beranda</b></a>
-                  
-                        <a class="nav-link disable" href="#"><b>Rental</b></a>
-                    </div>
-                    <!-- Link Login di sebelah kanan -->
-                    <div class="ms-auto">
-                        <a href="{{ route('login') }}" class="btn text-danger"><b>Log in</b></a>
-                        <a href="{{ route('dashboard') }}"> 
-                        <img src="{{ asset('image/adminlogo.jpg') }}" alt="" width="30px" height="30px">
-                        </a>
+
+@yield('main-content')
+
+
+    <!-- Contact Section -->
+    <section class="py-5 bg-secondary-custom">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="mb-4">Hubungi Kami</h2>
+                    <p class="lead mb-5">Punya pertanyaan? Silakan hubungi tim kami.</p>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <i class="bi bi-telephone-fill fs-3 mb-3"></i>
+                            <p>+62 123 456 789</p>
+                        </div>
+                        <div class="col-md-4">
+                            <i class="bi bi-envelope-fill fs-3 mb-3"></i>
+                            <p>info@bikerent.com</p>
+                        </div>
+                        <div class="col-md-4">
+                            <i class="bi bi-whatsapp fs-3 mb-3"></i>
+                            <p>+62 987 654 321</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </nav>
-    </div>
-        
-</div>
-        
-        @yield('main-content')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </div>
+    </section>
 
+    <!-- Footer -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2024 BikeRent. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navbar scroll effect
+       // Navbar scroll effect
+window.addEventListener("scroll", function () {
+    let navbar = document.querySelector(".navbar");
+    let navLinks = document.querySelectorAll(".nav-link");
+
+    if (window.scrollY > 50) {
+        navbar.classList.add("scrolled");
+        navLinks.forEach(link => link.classList.add("text-white", "fw-bold"));
+    } else {
+        navbar.classList.remove("scrolled");
+        navLinks.forEach(link => link.classList.remove("text-white", "fw-bold"));
+    }
+});
+
+window.addEventListener("scroll", function () {
+        let navbar = document.getElementById("mainNavbar");
+        if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
+        } else {
+            navbar.classList.remove("scrolled");
+        }
+    });
+
+    </script>
 </body>
 </html>

@@ -66,7 +66,7 @@ class BicycleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Bicycle $bicycle, string $id)
+    public function edit(string $id)
     {
         $bicycle=Bicycle::findOrFail($id);
         return view('bicycle.edit', compact('bicycle'));
@@ -76,19 +76,47 @@ class BicycleController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
+{
+    $request->validate([
+        'merk' => 'required',
+        'tipe' => 'required',
+        'warna' => 'required',
+        'harga_sewa' => 'required',
+        'deskripsi' => 'required',
+        'status' => 'required',
+    ]);
+
+    $bicycle = Bicycle::findOrFail($id);
+
+    // Cek apakah ada foto baru yang diunggah
+    if ($request->hasFile('foto')) {
         $request->validate([
-            'merk' => 'required',
-            'tipe' => 'required',
-            'warna' => 'required',
-            'harga_sewa' => 'required',
-            'deskripsi' => 'required',
-            'status' => 'required',
+            'foto' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
-        $bicycle= Bicycle::findOrFail($id);
-        $bicycle->update($request->all());
-        return redirect()->route('bicycles.index');
+
+        // Hapus foto lama jika ada
+        if ($bicycle->foto && file_exists(public_path($bicycle->foto))) {
+            unlink(public_path($bicycle->foto));
+        }
+
+        // Simpan foto baru
+        $imageName = time().'.'.$request->foto->extension();
+        $request->foto->move(public_path('images'), $imageName);
+        $bicycle->foto = 'images/'.$imageName;
     }
+
+    // Update data
+    $bicycle->update([
+        'merk' => $request->merk,
+        'tipe' => $request->tipe,
+        'warna' => $request->warna,
+        'harga_sewa' => $request->harga_sewa,
+        'deskripsi' => $request->deskripsi,
+        'status' => $request->status,
+    ]);
+
+    return redirect()->route('bicycles.index')->with('success', 'Data berhasil diperbarui');
+}
 
     /**
      * Remove the specified resource from storage.

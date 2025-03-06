@@ -4,11 +4,13 @@
 <h2 class="text-center m-5">Edit Data <span class="text-primary">{{$bicycle->tipe}}</span></h2>
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('bicycles.update', $bicycle->id_bicycle) }}" method="POST">
+        <form action="{{ route('bicycles.update', $bicycle->id_bicycle) }}" method="POST" enctype="multipart/form-data">
             @csrf 
             @method('PUT')
             <input type="text" name="merk" class="form-control mb-3" placeholder="Merk" value="{{ old('merk',$bicycle->merk) }}">
             <input type="text" name="tipe" class="form-control mb-3" placeholder="Tipe" value="{{ old('tipe',$bicycle->tipe) }}">
+            <textarea name="deskripsi" id="" class = "form-control mb-3" placeholder="Masukkan Deskripsi">{{ old('deskripsi',$bicycle->deskripsi) }}</textarea>
+            <input type="file" name="foto" class="form-control mb-3" placeholder="Foto Sepeda">
             <input type="text" name="warna" class="form-control mb-3" placeholder="Warna" value="{{ old('warna',$bicycle->warna) }}">
             <input type="text" name="harga_sewa" class="form-control mb-3" placeholder="Harga Sewa (Hanya Angka)" value="{{ old('harga_sewa',$bicycle->harga_sewa) }}">
             <select name="status" class="form-control mb-3">
