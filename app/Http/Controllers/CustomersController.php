@@ -3,17 +3,87 @@
     namespace App\Http\Controllers;
 
     use Illuminate\Support\Facades\DB;
+    use Illuminate\Support\Facades\Auth;
+    use Illuminate\Support\Facades\Hash;
     use App\Models\Customers;
     use Illuminate\Http\Request;
     use carbon\Carbon;
     class CustomersController extends Controller
     {
+        public function registerForm()
+{
+    return view('customers.register');
+}
+
+public function register(Request $request)
+{
+    $validatedData = $request->validate([
+        'nama' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:customers',
+        'password' => 'required|string|min:8|confirmed',
+        'alamat' => 'required|string',
+        'no_telpon' => 'required|string|max:20',
+    ]);
+
+    $customer = Customers::create([
+        'nama' => $validatedData['nama'],
+        'email' => $validatedData['email'],
+        'password' => Hash::make($validatedData['password']),
+        'alamat' => $validatedData['alamat'],
+        'no_telpon' => $validatedData['no_telpon'],
+    ]);
+
+    Auth::guard('customer')->login($customer);
+
+    return redirect()->route('home.guest')->with('success', 'Registrasi berhasil! Selamat datang di BikeRent.');
+}
+        public function loginForm()
+    {
+        return view('customers.login');
+    }
+    
+    // Proses login
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+        
+        if (Auth::guard('customer')->attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/');
+        }
+        
+        return back()->withErrors(['email' => 'Email atau password salah']);
+    }
+    
+    // Proses logout
+    public function logout(Request $request)
+    {
+        Auth::guard('customer')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        
+        return redirect('/');
+    }
+    
+    // Halaman dashboard customer
+    public function dashboard()
+    {
+        $customer = Auth::guard('customer')->user();
+        return view('customer.dashboard', compact('customer'));
+    }
+
+
 
         /**
          * Display a listing of the resource.
          */
         public function index()
         {
+        $customer = Auth::guard('customer')->user();
+
             $customers = DB::table('customers')
             ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
             ->where('created_at', '>=', Carbon::now()->subDays(7))
@@ -26,7 +96,7 @@
             $counts = $customers->pluck('count')->toArray();
 
             $customers = Customers::all();
-            return view('customers.index',compact('customers','dates','counts'));
+            return view('customers.index',compact('customers','customer', 'dates','counts'));
         }
         /**
          * Show the form for creating a new resource.

@@ -12,6 +12,17 @@
                 <li class="nav-item"><a class="nav-link text-dark" href="#about">Tentang Kami</a></li>
                 <li class="nav-item"><a class="nav-link text-dark" href="#bikes">Sepeda Kami</a></li>
                 <li class="nav-item"><a class="nav-link text-dark" href="#services">Layanan</a></li>
+                @if(Auth::guard('customer')->check())
+                    <li class="nav-item"><a class="nav-link text-dark">Hai, {{ Auth::guard('customer')->user()->nama }}</a></li>
+                    <li class="nav-item">
+                        <form action="{{ route('customer.logout') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-link nav-link text-dark">Logout</button>
+                        </form>
+                    </li>
+                @else
+                    <li class="nav-item"><a class="nav-link text-dark" href="{{ route('customer.login') }}">Login</a></li>
+                @endif
             </ul>
         </div>
     </div>
@@ -27,14 +38,13 @@
                         @csrf 
                         <input type="hidden" name="id_bicycle" value="{{ $bicycle->id_bicycle }}">
                         
+                        {{-- Menggunakan ID customer yang login --}}
+                        @php
+                            $loggedCustomer = Auth::guard('customer')->user();
+                        @endphp
                         <div class="mb-3">
-                            <label for="id_customer" class="form-label">Nama</label>
-                            <select name="id_customer" id="id_customer" class="form-control" required>
-                                <option value="">--Pilih Nama--</option>
-                                @foreach($customers as $c)
-                                    <option value="{{$c->id_customer}}">{{$c->nama}}</option>
-                                @endforeach
-                            </select>
+                            <input type="hidden" class="form-control" value="{{ $loggedCustomer->nama }}" readonly>
+                            <input type="hidden" name="id_customer" value="{{ $loggedCustomer->id_customer }}">
                         </div>
                         
                         <div class="row">

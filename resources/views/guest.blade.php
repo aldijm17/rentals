@@ -22,13 +22,19 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                        <i class="bi bi-person-circle"></i> Akun
+                        <i class="bi bi-person-circle"></i>  acc
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="#">Profil</a></li>
                         <li><a class="dropdown-item" href="#">Pengaturan</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                        <li>
+                            <form action="{{ route('customer.logout')}}" method="POST">
+                                    @csrf 
+                                    @method('POST')
+                                    <button class='btn nav-link text-danger'><b>Log Out</b></button>
+                            </form>    
+                        </li>
                     </ul>
                 </li>
             </ul>

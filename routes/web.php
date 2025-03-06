@@ -5,9 +5,13 @@ use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\BicycleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\CustomerAuthController;
+use App\Http\Controllers\Auth\CustomerDashboardController;
 use App\Http\Controllers\RentalsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuestController;
+
+
 Route::get('/', [GuestController::class, 'index'])->name('home.guest');
 Route::get('/status-transaction', function(){
     return view('rentals.success');
@@ -18,7 +22,18 @@ Route::get('/status-transaction', function(){
     Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [RegisterController::class, 'register']);
 });
-Route::post('/rentals/add/transaction', [RentalsController::class, 'progrestransaction'])->name('rentals.addtransaction');
+
+// Rute customer - login
+Route::get('/customer/login', [CustomersController::class, 'loginForm'])->name('customer.login');
+Route::post('/customer/login', [CustomersController::class, 'login']);
+Route::post('/customer/logout', [CustomersController::class, 'logout'])->name('customer.logout');
+Route::get('/customer/register', [CustomersController::class, 'registerForm'])->name('customer.register');
+Route::post('/customer/register', [CustomersController::class, 'register']);
+// Rute customer - dilindungi middleware
+Route::middleware('customer.auth')->group(function () {
+    Route::post('/rentals/{id}/transaction', [RentalsController::class, 'transaction'])->name('rentals.transaction');
+});
+Route::post('/rentals/add-transaction', [RentalsController::class, 'progrestransaction'])->name('rentals.addtransaction');
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'admin'], function(){
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -39,7 +54,6 @@ Route::middleware('auth')->group(function () {
         // Route::delete('/bicycles/{id}', [BicycleController::class, 'destroy'])->name('bicycles.destroy');
         Route::resource('rentals', RentalsController::class);
         // Route::get('/rentals', [RentalsController::class, 'index'])->name('rentals.index');
-        Route::post('/rentals/{id}/transaction', [RentalsController::class, 'transaction'])->name('rentals.transaction');
         // Route::get('/rentals/edit/{id}',  [RentalsController::class, 'edit'])->name('rentals.edit');
         // Route::put('/rentals/{id}', [RentalsController::class, 'update'])->name('rentals.update');
         // Route::delete('/rentals/{id}', [RentalsController::class, 'destroy'])->name('rentals.destroy');
