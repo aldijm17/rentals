@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Bicycle;
 class DashboardController extends Controller
 {
-    public function Index (){
-
-        $bicycle = Bicycle::all();
-        return view('dashboard', compact('bicycle'));
-
+    public function index()
+    {
+        $availableBicycles = Bicycle::where('status', 'Tersedia')->count();
+        $rentedBicycles = Bicycle::where('status', 'Disewa')->count();
+        
+        return view('dashboard', compact('availableBicycles', 'rentedBicycles'));
     }
 }

@@ -32,6 +32,7 @@ class BicycleController extends Controller
     $request->validate([
         'merk' => 'required',
         'foto' => 'required',
+        'jumlah' => 'required',
         'tipe' => 'required',
         'warna' => 'required',
         'harga_sewa' => 'required',
@@ -45,6 +46,7 @@ class BicycleController extends Controller
     Bicycle::create([
         'merk' => $request->merk,
         'foto' => 'images/'.$imageName,
+        'jumlah' => $request->jumlah,
         'tipe' => $request->tipe,
         'warna' => $request->warna,
         'harga_sewa' => $request->harga_sewa,
@@ -121,7 +123,7 @@ class BicycleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Bicycle $bicycle, string $id)
+    public function destroy( string $id)
     {
         $bicycle= Bicycle::findOrFail($id);
         $bicycle->delete();

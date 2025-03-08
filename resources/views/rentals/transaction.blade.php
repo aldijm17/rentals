@@ -54,7 +54,7 @@
                                     <div class="card-body text-center">
                                         <h5 class="card-title">{{$bicycle->merk}}</h5>
                                         <p class="text-muted">Cocok untuk medan off-road dan petualangan.</p>
-                                        <p class="text-primary fw-bold">Rp {{$bicycle->harga_sewa}} / hari</p>
+                                        <p class="text-primary fw-bold">Rp {{ number_format($bicycle->harga_sewa, 0, ',', '.') }} / hari</p>
                                     </div>
                                 </div>
                             </div>
@@ -73,9 +73,11 @@
                                     
                                     <div class="mb-3">
                                         <label for="total_biaya" class="form-label">Total Pembayaran</label>
-                                        <input type="number" name="total_biaya" id="total_biaya" class="form-control" placeholder="Masukkan jumlah pembayaran" required>
+                                        <div class="input-group">
+                                            <span class="input-group-text">Rp</span>
+                                            <input type="number" name="total_biaya" id="total_biaya" class="form-control" readonly>
+                                        </div>
                                     </div>
-                                    
                                     <button class="btn btn-primary w-100">Sewa Sekarang</button>
                                 </div>
                             </div>
@@ -86,4 +88,43 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const hargaPerHari = '{{$bicycle->harga_sewa}}';
+    const tanggalSewa = document.getElementById('tanggal_sewa');
+    const tanggalKembali = document.getElementById('tanggal_kembali');
+    const totalBiaya = document.getElementById('total_biaya');
+    const totalBiayaText = document.getElementById('total_biaya_text');
+    
+    function formatRupiah(angka) {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        }).format(angka).replace('IDR', 'Rp');
+    }
+    
+    function calculateTotal() {
+        if (tanggalSewa.value && tanggalKembali.value) {
+            const startDate = new Date(tanggalSewa.value);
+            const endDate = new Date(tanggalKembali.value);
+            
+            // Hitung selisih hari
+            const diffTime = Math.abs(endDate - startDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            // Hitung total biaya (minimal 1 hari)
+            const jumlahHari = diffDays > 0 ? diffDays : 1 ;
+            const total = hargaPerHari * jumlahHari;
+            
+            totalBiaya.value = total;
+            totalBiayaText.textContent = formatRupiah(total);
+        }
+    }
+    
+    tanggalSewa.addEventListener('change', calculateTotal);
+    tanggalKembali.addEventListener('change', calculateTotal);
+});
+</script>
 @endsection

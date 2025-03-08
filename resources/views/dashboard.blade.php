@@ -46,10 +46,19 @@
             </div>
         </div>
         <div class="col-md-4">
-            <h3>Pendapatan</h3>
+            <h3 class="text-center">Jumlah sepeda</h3>
             <div class="card">
                 <div class="card-body">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo assumenda id quam ex animi quia totam! Amet doloremque facere, nihil libero facilis architecto hic dolore eum est itaque ratione reiciendis!
+                    <div class="row">
+                        <div class="col-md-6 text-center">
+                            <h4>Tersedia</h4>
+                            <h2 class="text-success">{{ $availableBicycles }}</h2>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <h4>Disewa</h4>
+                            <h2 class="text-danger">{{ $rentedBicycles }}</h2>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

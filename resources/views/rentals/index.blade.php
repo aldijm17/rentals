@@ -13,23 +13,30 @@
                     <option value="{{$c->id_customer}}">{{$c->nama}}</option>
                     @endforeach
                 </select> 
-                <select name="id_bicycle" id="" class="form-control mb-2" required>
+                <select name="id_bicycle" id="id_bicycle" class="form-control mb-2" required>
                     <option value="">--Bicycle--</option>
                     @foreach($bicycles as $b)
-                    <option value="{{$b->id_bicycle}}">{{$b->merk}} | {{$b->tipe}}</option>
+                    <option value="{{$b->id_bicycle}}" data-price="{{$b->harga_sewa}}">{{$b->merk}} | {{$b->tipe}} - Rp {{ number_format($b->harga_sewa, 0, ',', '.') }}/hari</option>
                     @endforeach
                 </select> 
                 <div class="row">
                 <div class="col-md-6">
                     <label for="">Tanggal Sewa : </label>
-                    <input type="date" name="tanggal_sewa" class = "form-control mb-2 mt-1" required>
+                    <input type="date" name="tanggal_sewa" id="tanggal_sewa" class="form-control mb-2 mt-1" required>
                 </div>
                 <div class="col-md-6">
                     <label for="">Tanggal Kembali : </label>
-                    <input type="date" name="tanggal_kembali" class="form-control mb-2 mt-1" required>
+                    <input type="date" name="tanggal_kembali" id="tanggal_kembali" class="form-control mb-2 mt-1" required>
                 </div>
                 </div>
-                <input type="number" name="total_biaya" class="form-control mb-2" placeholder="Total Pembayaran" required>
+                <div class="form-group">
+                    <label for="total_biaya">Total Pembayaran :</label>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Rp</span>
+                        <input type="number" name="total_biaya" id="total_biaya" class="form-control" readonly>
+                    </div>
+                    <div id="total_biaya_text" class="form-text">Rp 0</div>
+                </div>
                 <select name="status" id="" class="form-control" required>
                     <option value="">--status--</option>
                     <option value="disewa">Disewa</option>
@@ -63,8 +70,18 @@
                 <td>{{$r->bicycles->merk}}</td>
                 <td>{{$r->tanggal_sewa}}</td>
                 <td>{{$r->tanggal_kembali}}</td>
-                <td>{{$r->total_biaya}}</td>
-                <td>{{$r->status}}</td>
+                <td>Rp {{ number_format($r->total_biaya, 0, ',', '.') }}</td>
+                <td>
+                    <form action="{{ route('rentals.updateStatus', $r->id_rental) }}" method="POST">
+                        @csrf
+                        @method('PATCH')
+                        @if($r->status == 'disewa')
+                            <button type="submit" name="status" value="dikembalikan" class="btn btn-warning btn-sm">Disewa</button>
+                        @else
+                            <button type="submit" name="status" value="disewa" class="btn btn-success btn-sm">Dikembalikan</button>
+                        @endif
+                    </form>
+                </td>
                 <td class="d-flex justify-content-center">
                     <a href="{{ route('rentals.edit', $r->id_rental) }}" class="btn btn-warning me-3 text-white"><i class="bi bi-pencil"></i></a>
                     <form action="{{ route('rentals.destroy',$r->id_rental) }}" method="POST">
@@ -85,4 +102,47 @@
 </div> 
 </div>
 
+<!-- Tambahkan script JavaScript untuk menghitung total biaya -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const bicycleSelect = document.getElementById('id_bicycle');
+    const tanggalSewa = document.getElementById('tanggal_sewa');
+    const tanggalKembali = document.getElementById('tanggal_kembali');
+    const totalBiaya = document.getElementById('total_biaya');
+    const totalBiayaText = document.getElementById('total_biaya_text');
+    
+    function formatRupiah(angka) {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        }).format(angka).replace('IDR', 'Rp');
+    }
+    
+    function calculateTotal() {
+        if (bicycleSelect.value && tanggalSewa.value && tanggalKembali.value) {
+            const selectedOption = bicycleSelect.options[bicycleSelect.selectedIndex];
+            const hargaPerHari = parseFloat(selectedOption.dataset.price);
+            
+            const startDate = new Date(tanggalSewa.value);
+            const endDate = new Date(tanggalKembali.value);
+            
+            // Hitung selisih hari
+            const diffTime = Math.abs(endDate - startDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            // Hitung total biaya (minimal 1 hari)
+            const jumlahHari = diffDays > 0 ? diffDays : 1;
+            const total = hargaPerHari * jumlahHari;
+            
+            totalBiaya.value = total;
+            totalBiayaText.textContent = formatRupiah(total);
+        }
+    }
+    
+    bicycleSelect.addEventListener('change', calculateTotal);
+    tanggalSewa.addEventListener('change', calculateTotal);
+    tanggalKembali.addEventListener('change', calculateTotal);
+});
+</script>
 @endsection

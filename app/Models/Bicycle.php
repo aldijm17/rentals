@@ -14,6 +14,7 @@ class Bicycle extends Model
     protected $fillable = [
         'merk',
         'foto',
+        'jumlah',
         'tipe',
         'warna',
         'harga_sewa',

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_bicycle');
             $table->string('merk', 50);
             $table->string('foto');
+            $table->integer('jumlah');
             $table->string('tipe', 50);
             $table->string('warna', 30);
             $table->decimal('harga_sewa', 10,2);

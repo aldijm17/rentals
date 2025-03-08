@@ -19,6 +19,7 @@
                     </div>
                     <textarea name="deskripsi" id="" class = "form-control mb-3" placeholder="Masukkan Deskripsi"></textarea>
                     <input type="file" name="foto" class="form-control mb-3" placeholder="Tambahkan Foto">
+                    <input type="number" name="jumlah" class="form-control mb-3" placeholder="Masukkan jumlah sepeda">
                     <input type="text" name="warna" class="form-control mb-3" placeholder="Warna">
                     <input type="text" name="harga_sewa" class="form-control mb-3" placeholder="Harga Sewa (Hanya Angka)">
                     <select name="status" id="" class="form-control mb-3">
@@ -41,6 +42,7 @@
                 <th>Merk</th>
                 <th>Deskripsi</th>
                 <th>Foto</th>
+                <th>Jumlah</th>
                 <th>Tipe</th>
                 <th>Warna</th>
                 <th>Harga Sewa</th>
@@ -55,6 +57,7 @@
                 <td>{{ $b->merk}}</td>
                 <td>{{ $b->deskripsi}}</td>
                 <td class="text-center"><img src="{{ asset($b->foto)}}" alt="" height="100px" widht="100px  "></td>
+                <td>{{ $b->jumlah}}</td>
                 <td>{{ $b->tipe}}</td>
                 <td>{{ $b->warna}}</td>
                 <td>{{ $b->harga_sewa}}</td>

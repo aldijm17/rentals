@@ -51,12 +51,17 @@ class RentalsController extends Controller
             'tanggal_sewa' => $request->tanggal_sewa,
             'tanggal_kembali' => $request->tanggal_kembali,
             'total_biaya' => $request->total_biaya,
-            'status' => 'sewa',
-
+            'status' => 'disewa',
         ]);
+        
+        // Kurangi jumlah sepeda yang tersedia
+        $bicycle = Bicycle::findOrFail($request->id_bicycle);
+        $bicycle->jumlah = $bicycle->jumlah - 1;
+        $bicycle->save();
     
         return redirect()->route('status-success');
     }
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -67,7 +72,16 @@ class RentalsController extends Controller
             'total_biaya',
             'status'
         ]);
+        
         $rentals = Rentals::create($request->all());
+        
+        // Jika status disewa, kurangi jumlah sepeda
+        if ($request->status == 'disewa') {
+            $bicycle = Bicycle::findOrFail($request->id_bicycle);
+            $bicycle->jumlah = $bicycle->jumlah - 1;
+            $bicycle->save();
+        }
+        
         return redirect()->route('rentals.index');
     }
 
@@ -105,17 +119,74 @@ class RentalsController extends Controller
         ]);
 
         $rentals = Rentals::findOrFail($id);
+        $oldStatus = $rentals->status;
+        $oldBicycleId = $rentals->id_bicycle;
+        
         $rentals->update($request->all());
+        
+        // Jika sepeda berubah atau status berubah
+        if ($oldBicycleId != $request->id_bicycle || $oldStatus != $request->status) {
+            // Jika sebelumnya disewa, kembalikan stok sepeda lama
+            if ($oldStatus == 'disewa') {
+                $oldBicycle = Bicycle::findOrFail($oldBicycleId);
+                $oldBicycle->jumlah = $oldBicycle->jumlah + 1;
+                $oldBicycle->save();
+            }
+            
+            // Jika sekarang disewa, kurangi stok sepeda baru
+            if ($request->status == 'disewa') {
+                $newBicycle = Bicycle::findOrFail($request->id_bicycle);
+                $newBicycle->jumlah = $newBicycle->jumlah - 1;
+                $newBicycle->save();
+            }
+        }
+        
         return redirect()->route('rentals.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Rentals $rentals, string $id)
+    public function destroy( string $id)
     {
         $rentals = Rentals::findOrFail($id);
+        
+        // Jika rental yang dihapus statusnya disewa, kembalikan stok sepeda
+        if ($rentals->status == 'disewa') {
+            $bicycle = Bicycle::findOrFail($rentals->id_bicycle);
+            $bicycle->jumlah = $bicycle->jumlah + 1;
+            $bicycle->save();
+        }
+        
         $rentals->delete();
         return redirect()->route('rentals.index');
+    }
+
+    /**
+     * Update the status of a rental.
+     */
+    public function updateStatus(Request $request, string $id)
+    {
+        $rentals = Rentals::findOrFail($id);
+        $oldStatus = $rentals->status;
+        $rentals->status = $request->status;
+        $rentals->save();
+        
+        $bicycle = Bicycle::findOrFail($rentals->id_bicycle);
+        
+        // Jika status berubah dari disewa ke dikembalikan
+        if ($oldStatus == 'disewa' && $request->status == 'dikembalikan') {
+            // Tambah jumlah sepeda karena dikembalikan
+            $bicycle->jumlah = $bicycle->jumlah + 1;
+        } 
+        // Jika status berubah dari dikembalikan ke disewa
+        else if ($oldStatus == 'dikembalikan' && $request->status == 'disewa') {
+            // Kurangi jumlah sepeda karena disewa lagi
+            $bicycle->jumlah = $bicycle->jumlah - 1;
+        }
+        
+        $bicycle->save();
+        
+        return redirect()->route('rentals.index')->with('success', 'Status berhasil diperbarui');
     }
 }

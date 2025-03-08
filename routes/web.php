@@ -37,7 +37,7 @@ Route::post('/rentals/add-transaction', [RentalsController::class, 'progrestrans
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'admin'], function(){
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
+        Route::patch('/rentals/{id}/update-status', [App\Http\Controllers\RentalsController::class, 'updateStatus'])->name('rentals.updateStatus');     
         Route::post('logout', [LoginController::class, 'logout'])->name('logout');
         Route::resource('customers', CustomersController::class);
         // Route::get('/customers', [CustomersController::class, 'index'])->name('customers.index');
@@ -59,4 +59,6 @@ Route::middleware('auth')->group(function () {
         // Route::delete('/rentals/{id}', [RentalsController::class, 'destroy'])->name('rentals.destroy');
     });
     
-});     
+
+
+});
